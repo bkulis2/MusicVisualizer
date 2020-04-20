@@ -15,8 +15,13 @@ class MyApp : public cinder::app::App {
   void update() override;
   void draw() override;
   void keyDown(cinder::app::KeyEvent) override;
-};
 
+ private:
+  void drawTitle() const;
+};
+template <typename C>
+void PrintText(const std::string& text, const C& color, const cinder::ivec2& size,
+               const cinder::vec2& loc);
 }  // namespace myapp
 
 #endif  // FINALPROJECT_APPS_MYAPP_H_
