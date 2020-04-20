@@ -26,26 +26,36 @@ void MyApp::setup() { cinder::gl::enableDepthWrite(); }
 void MyApp::update() {}
 
 void MyApp::draw() {
+  PrintTitle();
+  PrintChoose();
+}
+
+void MyApp::PrintTitle() const {
   cinder::gl::color(cinder::Rand::randFloat(), cinder::Rand::randFloat(),
                     cinder::Rand::randFloat());
   cinder::gl::drawStrokedRect(Rectf(getWindowWidth() / 2 - 200.0f, 50,
                                     getWindowWidth() / 2 + 200.0f, 250));
-  drawTitle();
-}
-
-void MyApp::drawTitle() const {
-  PrintText("Music\nVisualizer", Color::white(), cinder::ivec2{500, 150},
+  PrintText("Music\nVisualizer", Color::white(), 80, cinder::ivec2{500, 150},
             cinder::vec2{getWindowWidth() / 2, 150});
 }
 
+void MyApp::PrintChoose() const {
+  cinder::gl::color(0, 0, 0);
+  float font_size = 40;
+  PrintText("Choose Your Song: ", Color::white(), font_size, cinder::ivec2{1000, 150},
+            cinder::vec2{170, getWindowHeight() / 2 - 50});
+  PrintText("Choose Your Pattern: ", Color::white(), font_size, cinder::ivec2{1000, 150},
+            cinder::vec2{180, getWindowHeight() / 2 + 150});
+}
+
 template <typename C>
-void PrintText(const std::string& text, const C& color,
+void PrintText(const std::string& text, const C& color, float font_size,
                const cinder::ivec2& size, const cinder::vec2& loc) {
   cinder::gl::color(color);
 
   auto box = TextBox()
                  .alignment(TextBox::CENTER)
-                 .font(cinder::Font("Arial", 80))
+                 .font(cinder::Font("Arial", font_size))
                  .size(size)
                  .color(color)
                  .backgroundColor(ColorA(0, 0, 0, 0))
