@@ -19,10 +19,10 @@ class InteractiveTextBox : public InteractiveObject {
   void keyDown(ci::app::KeyEvent& event);
 
  protected:
-  ci::TextBox mTextBox;
-  std::string mText;
-  bool mActive;
-  bool mFirstText;
+  ci::TextBox text_box;
+  std::string text;
+  bool is_active;
+  bool default_text;
 };
 
 }  // namespace myapp
