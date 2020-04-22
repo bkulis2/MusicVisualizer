@@ -31,6 +31,7 @@ void MyApp::draw() {
   text_box->draw();
   PrintTitle();
   PrintChoose();
+  DrawPlayButton();
 }
 
 void MyApp::PrintTitle() const {
@@ -52,6 +53,14 @@ void MyApp::PrintChoose() const {
   PrintText("Choose Your Pattern: ", Color::white(), font_size,
             cinder::ivec2{1000, 150},
             cinder::vec2{180, getWindowHeight() / 2 + 150});
+}
+
+void MyApp::DrawPlayButton() const {
+  cinder::gl::color(0, 1, 0);
+  Rectf rect (650.0f, 700.0f, 770.0f, 750.0f);
+  cinder::gl::drawSolidRect(rect);
+  PrintText("Play Pattern", Color::white(), 20,
+            cinder::ivec2{100, 150}, cinder::vec2 {710, 725});
 }
 
 template <typename C>
