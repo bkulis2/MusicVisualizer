@@ -25,6 +25,7 @@ class MyApp : public cinder::app::App {
   void PrintTitle() const;
   void PrintChoose() const;
   void DrawPlayButton() const;
+  void DisplayPicture();
   std::shared_ptr<InteractiveTextBox> text_box;
 };
 

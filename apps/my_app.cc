@@ -2,6 +2,7 @@
 
 #include "my_app.h"
 
+#include <choreograph/Choreograph.h>
 #include <cinder/Rand.h>
 
 #include <memory>
@@ -32,6 +33,7 @@ void MyApp::draw() {
   PrintTitle();
   PrintChoose();
   DrawPlayButton();
+  DisplayPicture();
 }
 
 void MyApp::PrintTitle() const {
@@ -39,8 +41,7 @@ void MyApp::PrintTitle() const {
                     cinder::Rand::randFloat());
   cinder::gl::drawStrokedRect(Rectf(getWindowWidth() / 2 - 200.0f, 50,
                                     getWindowWidth() / 2 + 200.0f, 250));
-  PrintText("Music\nVisualizer", Color::white(), 80,
-            cinder::ivec2{500, 150},
+  PrintText("Music\nVisualizer", Color::white(), 80, cinder::ivec2{500, 150},
             cinder::vec2{getWindowWidth() / 2, 150});
 }
 
@@ -57,10 +58,17 @@ void MyApp::PrintChoose() const {
 
 void MyApp::DrawPlayButton() const {
   cinder::gl::color(0, 1, 0);
-  Rectf rect (650.0f, 700.0f, 770.0f, 750.0f);
+  Rectf rect(650.0f, 700.0f, 770.0f, 750.0f);
   cinder::gl::drawSolidRect(rect);
-  PrintText("Play Pattern", Color::white(), 20,
-            cinder::ivec2{100, 150}, cinder::vec2 {710, 725});
+  PrintText("Play Pattern", Color::white(), 20, cinder::ivec2{100, 150},
+            cinder::vec2{710, 725});
+}
+
+void MyApp::DisplayPicture() {
+  cinder::gl::Texture2dRef texture =
+      cinder::gl::Texture2d::create(loadImage(loadAsset("spiral.jpg")));
+  const cinder::vec2 locp = {100, 600};
+  cinder::gl::draw(texture, locp);
 }
 
 template <typename C>
@@ -83,17 +91,13 @@ void PrintText(const std::string& text, const C& color, float font_size,
   cinder::gl::draw(texture, locp);
 }
 
-void MyApp::keyDown(KeyEvent event) {
-  text_box->keyDown(event);
-}
+void MyApp::keyDown(KeyEvent event) { text_box->keyDown(event); }
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
   text_box->mouseDown(event);
 }
 
-void MyApp::mouseUp(cinder::app::MouseEvent event) {
-  text_box->mouseUp(event);
-}
+void MyApp::mouseUp(cinder::app::MouseEvent event) { text_box->mouseUp(event); }
 
 void MyApp::mouseDrag(cinder::app::MouseEvent event) {
   text_box->mouseDrag(event);
