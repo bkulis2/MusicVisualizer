@@ -46,7 +46,11 @@ void InteractiveTextBox::keyDown(cinder::app::KeyEvent& event) {
     }
   } else {
     const char character = event.getChar();
-    text += std::string(&character, 1);
+    if (event.getCode() == cinder::app::KeyEvent::SHIFT_DOWN) {
+      text += std::string(toupper(character), 1);
+    } else {
+      text += std::string(&character, 1);
+    }
   }
 
   text_box.setText(text);

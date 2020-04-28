@@ -6,6 +6,7 @@
 #include <InteractiveObject.h>
 #include <InteractiveTextBox.h>
 #include <cinder/app/App.h>
+#include <cinder/audio/audio.h>
 
 namespace myapp {
 
@@ -26,8 +27,8 @@ class MyApp : public cinder::app::App {
   void PrintChoose() const;
   void DrawPlayButton() const;
   void DisplayPicture();
-  void CheckPlayClicked(cinder::app::MouseEvent event);
-  std::shared_ptr<InteractiveTextBox> text_box;
+  cinder::audio::VoiceRef song_voice_;
+  std::shared_ptr<InteractiveTextBox> text_box_;
   bool go_to_visualizer_;
 };
 

@@ -21,8 +21,11 @@ MyApp::MyApp() {}
 void MyApp::setup() {
   cinder::gl::enableDepthWrite();
   Rectf rect(100.0f, 400.0f, 650.0f, 450.0f);
-  text_box = std::make_shared<InteractiveTextBox>(rect);
+  text_box_ = std::make_shared<InteractiveTextBox>(rect);
   go_to_visualizer_ = false;
+  cinder::audio::SourceFileRef sourceFile =
+      cinder::audio::load(cinder::app::loadAsset("lofi.mp3"));
+  song_voice_ = cinder::audio::Voice::create(sourceFile);
 }
 
 void MyApp::update() {}
@@ -31,13 +34,14 @@ void MyApp::draw() {
   if (!go_to_visualizer_) {
     cinder::gl::enableAlphaBlending();
     cinder::gl::clear(Color(0, 0, 0));
-    text_box->draw();
+    text_box_->draw();
     PrintTitle();
     PrintChoose();
     DrawPlayButton();
     DisplayPicture();
   } else {
     cinder::gl::clear(Color(1, 0, 0));
+    song_voice_->start();
   }
 }
 
@@ -76,25 +80,30 @@ void MyApp::DisplayPicture() {
   cinder::gl::draw(texture, locp);
 }
 
-
-void MyApp::keyDown(KeyEvent event) { text_box->keyDown(event); }
+void MyApp::keyDown(KeyEvent event) { text_box_->keyDown(event); }
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
   if (event.isLeft() && (event.getX() >= 650 && event.getX() <= 770) &&
       (event.getY() >= 700 && event.getY() <= 750)) {
     go_to_visualizer_ = true;
   }
-  text_box->mouseDown(event);
+  //  if (event.isLeft()) {
+  //    cinder::gl::color(cinder::Color::white());
+  //    cinder::gl::drawStrokedRect()
+  //  }
+  text_box_->mouseDown(event);
 }
 
-void MyApp::mouseUp(cinder::app::MouseEvent event) { text_box->mouseUp(event); }
+void MyApp::mouseUp(cinder::app::MouseEvent event) {
+  text_box_->mouseUp(event);
+}
 
 void MyApp::mouseDrag(cinder::app::MouseEvent event) {
-  text_box->mouseDrag(event);
+  text_box_->mouseDrag(event);
 }
 
 void MyApp::mouseMove(cinder::app::MouseEvent event) {
-  text_box->mouseMove(event);
+  text_box_->mouseMove(event);
 }
 
 template <typename C>
