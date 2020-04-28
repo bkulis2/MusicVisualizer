@@ -26,7 +26,9 @@ class MyApp : public cinder::app::App {
   void PrintChoose() const;
   void DrawPlayButton() const;
   void DisplayPicture();
+  void CheckPlayClicked(cinder::app::MouseEvent event);
   std::shared_ptr<InteractiveTextBox> text_box;
+  bool go_to_visualizer_;
 };
 
 template <typename C>

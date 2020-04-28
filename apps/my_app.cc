@@ -22,18 +22,23 @@ void MyApp::setup() {
   cinder::gl::enableDepthWrite();
   Rectf rect(100.0f, 400.0f, 650.0f, 450.0f);
   text_box = std::make_shared<InteractiveTextBox>(rect);
+  go_to_visualizer_ = false;
 }
 
 void MyApp::update() {}
 
 void MyApp::draw() {
-  cinder::gl::enableAlphaBlending();
-  cinder::gl::clear(Color(0, 0, 0));
-  text_box->draw();
-  PrintTitle();
-  PrintChoose();
-  DrawPlayButton();
-  DisplayPicture();
+  if (!go_to_visualizer_) {
+    cinder::gl::enableAlphaBlending();
+    cinder::gl::clear(Color(0, 0, 0));
+    text_box->draw();
+    PrintTitle();
+    PrintChoose();
+    DrawPlayButton();
+    DisplayPicture();
+  } else {
+    cinder::gl::clear(Color(1, 0, 0));
+  }
 }
 
 void MyApp::PrintTitle() const {
@@ -71,6 +76,27 @@ void MyApp::DisplayPicture() {
   cinder::gl::draw(texture, locp);
 }
 
+
+void MyApp::keyDown(KeyEvent event) { text_box->keyDown(event); }
+
+void MyApp::mouseDown(cinder::app::MouseEvent event) {
+  if (event.isLeft() && (event.getX() >= 650 && event.getX() <= 770) &&
+      (event.getY() >= 700 && event.getY() <= 750)) {
+    go_to_visualizer_ = true;
+  }
+  text_box->mouseDown(event);
+}
+
+void MyApp::mouseUp(cinder::app::MouseEvent event) { text_box->mouseUp(event); }
+
+void MyApp::mouseDrag(cinder::app::MouseEvent event) {
+  text_box->mouseDrag(event);
+}
+
+void MyApp::mouseMove(cinder::app::MouseEvent event) {
+  text_box->mouseMove(event);
+}
+
 template <typename C>
 void PrintText(const std::string& text, const C& color, float font_size,
                const cinder::ivec2& size, const cinder::vec2& loc) {
@@ -90,21 +116,4 @@ void PrintText(const std::string& text, const C& color, float font_size,
   const auto texture = cinder::gl::Texture::create(surface);
   cinder::gl::draw(texture, locp);
 }
-
-void MyApp::keyDown(KeyEvent event) { text_box->keyDown(event); }
-
-void MyApp::mouseDown(cinder::app::MouseEvent event) {
-  text_box->mouseDown(event);
-}
-
-void MyApp::mouseUp(cinder::app::MouseEvent event) { text_box->mouseUp(event); }
-
-void MyApp::mouseDrag(cinder::app::MouseEvent event) {
-  text_box->mouseDrag(event);
-}
-
-void MyApp::mouseMove(cinder::app::MouseEvent event) {
-  text_box->mouseMove(event);
-}
-
 }  // namespace myapp
