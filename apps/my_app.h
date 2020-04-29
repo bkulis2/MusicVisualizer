@@ -8,6 +8,9 @@
 #include <cinder/app/App.h>
 #include <cinder/audio/audio.h>
 
+#include <choreograph/Choreograph.h>
+#include <choreograph/Output.hpp>
+
 namespace myapp {
 
 class MyApp : public cinder::app::App {
@@ -30,6 +33,14 @@ class MyApp : public cinder::app::App {
   cinder::audio::VoiceRef song_voice_;
   std::shared_ptr<InteractiveTextBox> text_box_;
   bool go_to_visualizer_;
+
+  ch::Output<ci::vec2> _position_a;
+  ch::Output<ci::vec2> _position_b;
+
+  ch::Output<ci::vec2> _reference_bounce;
+  ch::Output<ci::vec2> _reference_slide;
+
+  ci::Timer timer_;
 };
 
 template <typename C>

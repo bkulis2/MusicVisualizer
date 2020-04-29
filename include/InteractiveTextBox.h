@@ -18,9 +18,9 @@ class InteractiveTextBox : public InteractiveObject {
   void releasedOutside() override;
   void keyDown(ci::app::KeyEvent& event);
 
+  std::string text;
  protected:
   ci::TextBox text_box;
-  std::string text;
   bool is_active;
   bool default_text;
 };

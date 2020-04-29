@@ -7,7 +7,7 @@ namespace myapp {
 InteractiveTextBox::InteractiveTextBox(const cinder::Rectf& rect)
     : InteractiveObject(rect) {
   is_active = false;
-  text = "Type in a link or a audio location path.";
+  text = "Type which audio file you want (including format).";
   text_box.setText(text);
   text_box.setFont(cinder::Font("Arial", 24));
   text_box.setPremultiplied(true);
