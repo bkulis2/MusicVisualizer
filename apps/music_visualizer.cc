@@ -7,7 +7,6 @@
 #include <cinder/gl/draw.h>
 #include <cinder/gl/scoped.h>
 #include <cinder/Text.h>
-#include <cinder/gl/wrapper.h>
 #include <gflags/gflags.h>
 
 namespace visualizer {
@@ -23,7 +22,8 @@ MyApp::MyApp() :
 song_ {FLAGS_song} {}
 
 void MyApp::setup() {
-  go_to_visualizer_ = false;
+  on_visualizer_screen_ = false;
+  selected_pattern_ = false;
   cinder::audio::SourceFileRef sourceFile =
       cinder::audio::load(cinder::app::loadAsset(song_));
   song_voice_ = cinder::audio::Voice::create(sourceFile);
@@ -65,13 +65,14 @@ void MyApp::update() {
 }
 
 void MyApp::draw() {
-  if (!go_to_visualizer_) {
-    ci::gl::enableAlphaBlending();
-    ci::gl::clear(Color(0, 0, 0));
+  ci::gl::enableAlphaBlending();
+  if (!on_visualizer_screen_) {
+    ci::gl::clear(Color(0.5, 0, 0.5));
     PrintTitle();
     PrintChoose();
     DrawPlayButton();
     DisplayPicture();
+    DrawSelectedPattern();
   } else {
     ci::gl::clear(Color(0, 0, 0));
     cinder::gl::ScopedColor color(ci::Color(0.72f, 1.0f, 1.0f));
@@ -95,26 +96,29 @@ void MyApp::draw() {
 void MyApp::PrintTitle() const {
   ci::gl::color(ci::Rand::randFloat(), ci::Rand::randFloat(),
                 ci::Rand::randFloat());
-  ci::gl::drawStrokedRect(Rectf(getWindowWidth() / 2 - 200.0f, 50,
-                                getWindowWidth() / 2 + 200.0f, 250));
-  PrintText("Music\nVisualizer", Color::white(), 80, ci::ivec2{500, 150},
+  ci::gl::drawStrokedRect(Rectf(getWindowWidth() / 2 - 170.0f, 70,
+                                getWindowWidth() / 2 + 170.0f, 230));
+  PrintText("Music\nVisualizer", Color::black(), 80, ci::ivec2{500, 150},
             ci::vec2{getWindowWidth() / 2, 150});
 }
 
 void MyApp::PrintChoose() const {
   ci::gl::color(0, 0, 0);
   float font_size = 40;
-  PrintText("Choose Your Song: ", Color::white(), font_size,
+  PrintText("Song File You Chose:", Color::white(), font_size,
             ci::ivec2{1000, 150}, ci::vec2{170, getWindowHeight() / 2 - 50});
+  PrintText(song_, Color(1, 0, 0), font_size,
+            ci::ivec2{1000, 150}, ci::vec2{getWindowWidth() / 2 + 25, getWindowHeight() / 2 - 50});
   PrintText("Choose Your Pattern: ", Color::white(), font_size,
             ci::ivec2{1000, 150}, ci::vec2{180, getWindowHeight() / 2 + 150});
 }
 
 void MyApp::DrawPlayButton() const {
-  ci::gl::color(0, 1, 0);
+  ci::gl::color(0, 0, .7);
+  ci::gl::lineWidth(3);
   Rectf rect(650.0f, 700.0f, 770.0f, 750.0f);
   ci::gl::drawSolidRect(rect);
-  PrintText("Play Pattern", Color::white(), 20, ci::ivec2{100, 150},
+  PrintText("Play Pattern", Color::white(), 20, ci::ivec2{70, 50},
             ci::vec2{710, 725});
 }
 
@@ -125,21 +129,38 @@ void MyApp::DisplayPicture() {
   ci::gl::draw(texture, locp);
 }
 
+void MyApp::DrawSelectedPattern() {
+  if (selected_pattern_) {
+    cinder::gl::color(cinder::Color::white());
+    Rectf rect(90.0f, 590.0f, 272.0f, 767.0f);
+    cinder::gl::drawStrokedRect(rect);
+  }
+}
+
 void MyApp::keyDown(KeyEvent event) {
+  auto current_volume = song_voice_->getVolume();
+  switch (event.getCode()) {
+    case KeyEvent::KEY_UP:
+      if (current_volume < 1.0f) {
+        song_voice_->setVolume(current_volume + .01f);
+      }
+    case KeyEvent::KEY_DOWN:
+      if (current_volume > 0) {
+        song_voice_->setVolume(current_volume - .01f);
+      }
+  }
 }
 
 void MyApp::mouseDown(ci::app::MouseEvent event) {
   if (event.isLeft() && (event.getX() >= 650 && event.getX() <= 770) &&
       (event.getY() >= 700 && event.getY() <= 750)) {
-    go_to_visualizer_ = true;
+    on_visualizer_screen_ = true;
+  } else if (event.isLeft() && (event.getX() >= 100 && event.getX() <= 262) &&
+             (event.getY() >= 600 && event.getY() <= 757)) {
+    selected_pattern_ = true;
   }
-
-  // draw rect around selected pattern
-  //  if (event.isLeft()) {
-  //    cinder::gl::color(cinder::Color::white());
-  //    cinder::gl::drawStrokedRect()
-  //  }
 }
+
 
 void MyApp::mouseUp(ci::app::MouseEvent event) {
 }
@@ -157,7 +178,7 @@ void PrintText(const std::string& text, const C& color, float font_size,
 
   auto box = ci::TextBox()
                  .alignment(ci::TextBox::CENTER)
-                 .font(ci::Font("Arial", font_size))
+                 .font(ci::Font("Roboto", font_size))
                  .size(size)
                  .color(color)
                  .backgroundColor(ColorA(0, 0, 0, 0))

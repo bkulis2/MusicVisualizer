@@ -28,8 +28,10 @@ class MyApp : public cinder::app::App {
   void PrintChoose() const;
   void DrawPlayButton() const;
   void DisplayPicture();
+  void DrawSelectedPattern();
   cinder::audio::VoiceRef song_voice_;
-  bool go_to_visualizer_;
+  bool on_visualizer_screen_;
+  bool selected_pattern_;
   std::string song_;
   ch::Output<ci::vec2> _position_a;
   ch::Output<ci::vec2> _position_b;
