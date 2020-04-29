@@ -1,7 +1,7 @@
 // Copyright (c) 2020 CS126SP20. All rights reserved.
 
-#ifndef FINALPROJECT_APPS_MYAPP_H_
-#define FINALPROJECT_APPS_MYAPP_H_
+#ifndef FINALPROJECT_APPS_MUSIC_VISUALIZER_H_
+#define FINALPROJECT_APPS_MUSIC_VISUALIZER_H_
 
 #include <cinder/app/App.h>
 #include <cinder/audio/audio.h>
@@ -43,4 +43,4 @@ void PrintText(const std::string& text, const C& color, float font_size,
                const cinder::ivec2& size, const cinder::vec2& loc);
 }  // namespace visualizer
 
-#endif  // FINALPROJECT_APPS_MYAPP_H_
+#endif  // FINALPROJECT_APPS_MUSIC_VISUALIZER_H_
