@@ -3,8 +3,6 @@
 #ifndef FINALPROJECT_APPS_MYAPP_H_
 #define FINALPROJECT_APPS_MYAPP_H_
 
-#include <InteractiveObject.h>
-#include <InteractiveTextBox.h>
 #include <cinder/app/App.h>
 #include <cinder/audio/audio.h>
 
@@ -31,7 +29,6 @@ class MyApp : public cinder::app::App {
   void DrawPlayButton() const;
   void DisplayPicture();
   cinder::audio::VoiceRef song_voice_;
-  std::shared_ptr<InteractiveTextBox> text_box_;
   bool go_to_visualizer_;
   std::string song_;
   ch::Output<ci::vec2> _position_a;

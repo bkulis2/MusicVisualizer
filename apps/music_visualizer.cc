@@ -4,6 +4,10 @@
 
 #include <choreograph/Choreograph.h>
 #include <cinder/Rand.h>
+#include <cinder/gl/draw.h>
+#include <cinder/gl/scoped.h>
+#include <cinder/Text.h>
+#include <cinder/gl/wrapper.h>
 #include <gflags/gflags.h>
 
 namespace visualizer {
@@ -11,7 +15,6 @@ namespace visualizer {
 using ci::Color;
 using ci::ColorA;
 using ci::Rectf;
-using ci::TextBox;
 using ci::app::KeyEvent;
 
 DECLARE_string(song);
@@ -20,8 +23,6 @@ MyApp::MyApp() :
 song_ {FLAGS_song} {}
 
 void MyApp::setup() {
-  Rectf rect(100.0f, 400.0f, 650.0f, 450.0f);
-  text_box_ = std::make_shared<InteractiveTextBox>(rect);
   go_to_visualizer_ = false;
   cinder::audio::SourceFileRef sourceFile =
       cinder::audio::load(cinder::app::loadAsset(song_));
@@ -67,7 +68,6 @@ void MyApp::draw() {
   if (!go_to_visualizer_) {
     ci::gl::enableAlphaBlending();
     ci::gl::clear(Color(0, 0, 0));
-    text_box_->draw();
     PrintTitle();
     PrintChoose();
     DrawPlayButton();
@@ -126,16 +126,12 @@ void MyApp::DisplayPicture() {
 }
 
 void MyApp::keyDown(KeyEvent event) {
-  text_box_->keyDown(event);
-
 }
 
 void MyApp::mouseDown(ci::app::MouseEvent event) {
   if (event.isLeft() && (event.getX() >= 650 && event.getX() <= 770) &&
       (event.getY() >= 700 && event.getY() <= 750)) {
     go_to_visualizer_ = true;
-  } else if (!go_to_visualizer_) {
-    text_box_->mouseDown(event);
   }
 
   // draw rect around selected pattern
@@ -146,15 +142,12 @@ void MyApp::mouseDown(ci::app::MouseEvent event) {
 }
 
 void MyApp::mouseUp(ci::app::MouseEvent event) {
-  text_box_->mouseUp(event);
 }
 
 void MyApp::mouseDrag(ci::app::MouseEvent event) {
-  text_box_->mouseDrag(event);
 }
 
 void MyApp::mouseMove(ci::app::MouseEvent event) {
-  text_box_->mouseMove(event);
 }
 
 template <typename C>
@@ -162,8 +155,8 @@ void PrintText(const std::string& text, const C& color, float font_size,
                const ci::ivec2& size, const ci::vec2& loc) {
   ci::gl::color(color);
 
-  auto box = TextBox()
-                 .alignment(TextBox::CENTER)
+  auto box = ci::TextBox()
+                 .alignment(ci::TextBox::CENTER)
                  .font(ci::Font("Arial", font_size))
                  .size(size)
                  .color(color)
