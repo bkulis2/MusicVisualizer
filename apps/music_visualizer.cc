@@ -4,9 +4,9 @@
 
 #include <choreograph/Choreograph.h>
 #include <cinder/Rand.h>
+#include <cinder/Text.h>
 #include <cinder/gl/draw.h>
 #include <cinder/gl/scoped.h>
-#include <cinder/Text.h>
 #include <gflags/gflags.h>
 
 namespace visualizer {
@@ -18,12 +18,12 @@ using ci::app::KeyEvent;
 
 DECLARE_string(song);
 
-MyApp::MyApp() :
-song_ {FLAGS_song} {}
+MyApp::MyApp() : song_{FLAGS_song} {}
 
 void MyApp::setup() {
   on_visualizer_screen_ = false;
-  selected_pattern_ = false;
+  selected_pattern_one_ = false;
+  selected_pattern_two_ = false;
   cinder::audio::SourceFileRef sourceFile =
       cinder::audio::load(cinder::app::loadAsset(song_));
   song_voice_ = cinder::audio::Voice::create(sourceFile);
@@ -71,7 +71,7 @@ void MyApp::draw() {
     PrintTitle();
     PrintChoose();
     DrawPlayButton();
-    DisplayPicture();
+    DisplayPictures();
     DrawSelectedPattern();
   } else {
     ci::gl::clear(Color(0, 0, 0));
@@ -107,14 +107,14 @@ void MyApp::PrintChoose() const {
   float font_size = 40;
   PrintText("Song File You Chose:", Color::white(), font_size,
             ci::ivec2{1000, 150}, ci::vec2{170, getWindowHeight() / 2 - 50});
-  PrintText(song_, Color(1, 0, 0), font_size,
-            ci::ivec2{1000, 150}, ci::vec2{getWindowWidth() / 2 + 25, getWindowHeight() / 2 - 50});
+  PrintText(song_, Color(1, 0, 0), font_size, ci::ivec2{1000, 150},
+            ci::vec2{getWindowWidth() / 2 + 25, getWindowHeight() / 2 - 50});
   PrintText("Choose Your Pattern: ", Color::white(), font_size,
             ci::ivec2{1000, 150}, ci::vec2{180, getWindowHeight() / 2 + 150});
 }
 
 void MyApp::DrawPlayButton() const {
-  ci::gl::color(0, 0, .7);
+  ci::gl::color(0.0f, 0.0f, 0.7f);
   ci::gl::lineWidth(3);
   Rectf rect(650.0f, 700.0f, 770.0f, 750.0f);
   ci::gl::drawSolidRect(rect);
@@ -122,17 +122,26 @@ void MyApp::DrawPlayButton() const {
             ci::vec2{710, 725});
 }
 
-void MyApp::DisplayPicture() {
-  ci::gl::Texture2dRef texture =
+void MyApp::DisplayPictures() {
+  ci::gl::Texture2dRef texture_one =
       ci::gl::Texture2d::create(loadImage(loadAsset("spiral.jpg")));
-  const ci::vec2 locp = {100, 600};
-  ci::gl::draw(texture, locp);
+  const ci::vec2 loc1 = {100, 600};
+  ci::gl::draw(texture_one, loc1);
+
+  ci::gl::Texture2dRef texture_two =
+      ci::gl::Texture2d::create(loadImage(loadAsset("frequency.png")));
+  const ci::vec2 loc2 = {400, 603};
+  ci::gl::draw(texture_two, loc2);
 }
 
 void MyApp::DrawSelectedPattern() {
-  if (selected_pattern_) {
+  if (selected_pattern_one_) {
     cinder::gl::color(cinder::Color::white());
     Rectf rect(90.0f, 590.0f, 272.0f, 767.0f);
+    cinder::gl::drawStrokedRect(rect);
+  } else if (selected_pattern_two_) {
+    cinder::gl::color(cinder::Color::white());
+    Rectf rect(390.0f, 593.0f, 560.0f, 763.0f);
     cinder::gl::drawStrokedRect(rect);
   }
 }
@@ -157,19 +166,20 @@ void MyApp::mouseDown(ci::app::MouseEvent event) {
     on_visualizer_screen_ = true;
   } else if (event.isLeft() && (event.getX() >= 100 && event.getX() <= 262) &&
              (event.getY() >= 600 && event.getY() <= 757)) {
-    selected_pattern_ = true;
+    selected_pattern_one_ = true;
+    selected_pattern_two_ = false;
+  } else if (event.isLeft() && (event.getX() >= 400 && event.getX() <= 550) &&
+           (event.getY() >= 603 && event.getY() <= 753)) {
+    selected_pattern_one_ = false;
+    selected_pattern_two_ = true;
   }
 }
 
+void MyApp::mouseUp(ci::app::MouseEvent event) {}
 
-void MyApp::mouseUp(ci::app::MouseEvent event) {
-}
+void MyApp::mouseDrag(ci::app::MouseEvent event) {}
 
-void MyApp::mouseDrag(ci::app::MouseEvent event) {
-}
-
-void MyApp::mouseMove(ci::app::MouseEvent event) {
-}
+void MyApp::mouseMove(ci::app::MouseEvent event) {}
 
 template <typename C>
 void PrintText(const std::string& text, const C& color, float font_size,
