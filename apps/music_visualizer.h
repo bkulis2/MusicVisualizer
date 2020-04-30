@@ -6,8 +6,6 @@
 #include <cinder/app/App.h>
 #include <cinder/audio/audio.h>
 
-#include <choreograph/Choreograph.h>
-#include <choreograph/Output.hpp>
 
 namespace visualizer {
 
@@ -29,18 +27,11 @@ class MyApp : public cinder::app::App {
   void DrawPlayButton() const;
   void DisplayPictures();
   void DrawSelectionRect();
-  void DrawSpiralPattern();
-  void SetupSpiralPattern();
   cinder::audio::VoiceRef song_voice_;
   bool on_visualizer_screen_;
   bool selected_spiral_pattern_;
   bool selected_frequency_pattern_;
   std::string song_;
-  ch::Output<ci::vec2> _position_a;
-  ch::Output<ci::vec2> _position_b;
-  ch::Output<ci::vec2> _reference_bounce;
-  ch::Output<ci::vec2> _reference_slide;
-  ci::Timer timer_;
 };
 
 template <typename C>
