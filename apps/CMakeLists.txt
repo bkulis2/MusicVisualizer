@@ -13,7 +13,7 @@ ci_make_app(
     CINDER_PATH ${CINDER_PATH}
     SOURCES     ${SOURCE_LIST}
     LIBRARIES   mylibrary gflags
-    BLOCKS      Choreograph
+    BLOCKS      Cinder-FFTOctaveAnalysis
 )
 
 target_compile_features(music_visualizer PRIVATE cxx_std_14)
