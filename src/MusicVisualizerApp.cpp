@@ -29,7 +29,10 @@ namespace visualizer {
 		ci::gl::color(ci::ColorAf::white());
 
 		sine_visualizer_.setup();
+		song_visualizer_.setup();
 	}
+
+	void MusicVisualizerApp::update() {}
 
 	void MusicVisualizerApp::draw() {
 		ci::gl::enableAlphaBlending();
@@ -45,7 +48,9 @@ namespace visualizer {
 			cinder::gl::color(ci::ColorAf::white());
 			sine_visualizer_.draw();
 		} else if (selected_song_visualizer_) {
-
+			ci::gl::clear(ci::ColorAf::black());
+			cinder::gl::color(ci::ColorAf::white());
+			song_visualizer_.draw();
 		}
 	}
 	
@@ -72,7 +77,11 @@ namespace visualizer {
 	}
 
 	void MusicVisualizerApp::shutdown() {
-		sine_visualizer_.shutdown();
+		if (selected_interactive_visualizer_) {
+			sine_visualizer_.shutdown();
+		} else {
+			song_visualizer_.shutdown();
+		}
 	}
 
 	void MusicVisualizerApp::PrintTitle() const {

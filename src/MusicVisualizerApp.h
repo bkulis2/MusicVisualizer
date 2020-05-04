@@ -12,11 +12,12 @@ namespace visualizer {
 	class MusicVisualizerApp : public ci::app::AppBasic {
 
 	public:
-		void	setup();
-		void	draw();
-		void	mouseMove(ci::app::MouseEvent event);
-		void    mouseDown(ci::app::MouseEvent event);
-		void	shutdown();
+		void setup();
+		void update();
+		void draw();
+		void mouseMove(ci::app::MouseEvent event);
+		void mouseDown(ci::app::MouseEvent event);
+		void shutdown();
 
 	private:
 		void PrintTitle() const;

@@ -18,5 +18,6 @@ namespace visualizer {
 			ci::audio::SourceRef audio_source_file_;
 			ci::audio::PcmBuffer32fRef buffer_;
 			ci::audio::TrackRef track_;
+			bool song_playing_;
 	};
 } // namespace visualizer
