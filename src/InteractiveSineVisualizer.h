@@ -27,7 +27,6 @@ namespace visualizer {
 		float	max_frequency_;
 		float	min_frequency_;
 		bool    sine_playing_;
-		//KissRef fft_;
 	};
 } //namespace visualizer
 #endif

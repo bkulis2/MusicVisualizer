@@ -21,8 +21,8 @@ namespace visualizer {
 		setWindowSize(800, 800);
 
 		on_visualizer_screen_ = false;
-		selected_interactive_sine_ = false;
-		selected_frequency_visualizer_ = false;
+		selected_interactive_visualizer_ = false;
+		selected_song_visualizer_ = false;
 
 		ci::gl::enable(GL_LINE_SMOOTH);
 		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
@@ -40,11 +40,11 @@ namespace visualizer {
 			DrawPlayButton();
 			DisplayPictures();
 			DrawSelectionRect();
-		} else if (selected_interactive_sine_) {
+		} else if (selected_interactive_visualizer_) {
 			ci::gl::clear(ci::ColorAf::black());
 			cinder::gl::color(ci::ColorAf::white());
 			sine_visualizer_.draw();
-		} else if (selected_frequency_visualizer_) {
+		} else if (selected_song_visualizer_) {
 
 		}
 	}
@@ -61,13 +61,13 @@ namespace visualizer {
 		}
 		else if (event.isLeft() && (event.getX() >= 100 && event.getX() <= 300) &&
 			(event.getY() >= 500 && event.getY() <= 700)) {
-			selected_interactive_sine_ = true;
-			selected_frequency_visualizer_ = false;
+			selected_interactive_visualizer_ = true;
+			selected_song_visualizer_ = false;
 		}
 		else if (event.isLeft() && (event.getX() >= 400 && event.getX() <= 600) &&
 			(event.getY() >= 500 && event.getY() <= 700)) {
-			selected_interactive_sine_ = false;
-			selected_frequency_visualizer_ = true;
+			selected_interactive_visualizer_ = false;
+			selected_song_visualizer_ = true;
 		}
 	}
 
@@ -107,17 +107,17 @@ namespace visualizer {
 		auto texture_one = ci::gl::Texture(ci::loadImage(ci::app::loadAsset("sine.png")));
 		const ci::Vec2f loc1(100.0f, 500.0f);
 		ci::gl::draw(texture_one, loc1);
-		auto texture_two = ci::gl::Texture(ci::loadImage(ci::app::loadAsset("visualizer.png")));
+		auto texture_two = ci::gl::Texture(ci::loadImage(ci::app::loadAsset("song.png")));
 		const ci::Vec2f loc2 (400.0f, 500.0f);
 		ci::gl::draw(texture_two, loc2);
 	}
 
 	void MusicVisualizerApp::DrawSelectionRect() {
-		if (selected_interactive_sine_) {
+		if (selected_interactive_visualizer_) {
 			cinder::gl::color(cinder::Color::white());
 			ci::Rectf rect(90.0f, 490.0f, 310.0f, 710.0f);
 			cinder::gl::drawStrokedRect(rect);
-		} else if (selected_frequency_visualizer_) {
+		} else if (selected_song_visualizer_) {
 			cinder::gl::color(cinder::Color::white());
 			ci::Rectf rect(390.0f, 490.0f, 610.0f, 710.0f);
 			cinder::gl::drawStrokedRect(rect);

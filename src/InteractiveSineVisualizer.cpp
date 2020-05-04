@@ -1,10 +1,9 @@
-#include <cinder/app/AppBasic.h>
 #include <cinder/audio/Output.h>
 #include <cinder/audio/Callback.h>
 #include <cinder/CinderMath.h>
 
-#include "KissFFT.h"
 #include "InteractiveSineVisualizer.h"
+#include "KissFFT.h"
 
 namespace visualizer {
 

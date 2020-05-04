@@ -1,8 +1,9 @@
-#include "cinder/app/AppBasic.h"
-#include "cinder/audio/Output.h"
-#include "cinder/audio/Callback.h"
-#include "cinder/CinderMath.h"
+#include <cinder/app/AppBasic.h>
+#include <cinder/audio/Output.h>
+#include <cinder/audio/Callback.h>
+#include <cinder/CinderMath.h>
 #include "InteractiveSineVisualizer.h"
+#include "SongVisualizer.h"
 
 #ifndef MUSICVISUALIZERAPP_H
 #define MUSICVISUALIZERAPP_H
@@ -24,10 +25,11 @@ namespace visualizer {
 		void DisplayPictures();
 		void DrawSelectionRect();
 		bool on_visualizer_screen_;
-		bool selected_interactive_sine_;
-		bool selected_frequency_visualizer_;
+		bool selected_interactive_visualizer_;
+		bool selected_song_visualizer_;
 
 		InteractiveSineVisualizer sine_visualizer_;
+		SongVisualizer song_visualizer_;
 	};
 
 	void PrintText(const std::string& text, const ci::ColorA& color, float font_size,
