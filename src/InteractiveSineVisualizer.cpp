@@ -1,13 +1,14 @@
-#include "cinder/app/AppBasic.h"
-#include "cinder/audio/Output.h"
-#include "cinder/audio/Callback.h"
-#include "cinder/CinderMath.h"
+#include <cinder/app/AppBasic.h>
+#include <cinder/audio/Output.h>
+#include <cinder/audio/Callback.h>
+#include <cinder/CinderMath.h>
+
 #include "KissFFT.h"
-#include "InteractiveSine.h"
+#include "InteractiveSineVisualizer.h"
 
 namespace visualizer {
 
-	void InteractiveSine::setup() {
+	void InteractiveSineVisualizer::setup() {
 		amplitude_ = 0.5f;
 		max_frequency_ = 20000.0f;
 		min_frequency_ = 1.0f;
@@ -17,9 +18,9 @@ namespace visualizer {
 		sine_playing_ = false;
 	}
 
-	void InteractiveSine::draw() {
+	void InteractiveSineVisualizer::draw() {
 		if (!sine_playing_) {
-			ci::audio::Output::play(ci::audio::createCallback(this, &InteractiveSine::sineWave));
+			ci::audio::Output::play(ci::audio::createCallback(this, &InteractiveSineVisualizer::BuildSine));
 			sine_playing_ = true;
 		}
 
@@ -51,7 +52,7 @@ namespace visualizer {
 		}
 	}
 
-	void InteractiveSine::mouseMove(ci::app::MouseEvent event) {
+	void InteractiveSineVisualizer::mouseMove(ci::app::MouseEvent event) {
 		amplitude_ = 1.0f - event.getY() / (float) ci::app::getWindowHeight();
 		double width = (double) ci::app::getWindowWidth();
 		double x = width - (double)event.getX();
@@ -61,13 +62,13 @@ namespace visualizer {
 		amplitude_ = ci::math<float>::clamp(amplitude_ * (1.0f - position), 0.05f, 1.0f);
 	}
 
-	void InteractiveSine::shutdown() {
+	void InteractiveSineVisualizer::shutdown() {
 		if (fft_) {
 			fft_->stop();
 		}
 	}
 
-	void InteractiveSine::sineWave(uint64_t sample_offset, uint32_t sample_count, ci::audio::Buffer32f *buffer) {
+	void InteractiveSineVisualizer::BuildSine(uint64_t sample_offset, uint32_t sample_count, ci::audio::Buffer32f *buffer) {
 		phase_adjust_ = phase_adjust_ * 0.95f + (frequency_target_ / 44100.0f) * 0.05f;
 		for (uint32_t i = 0; i < sample_count; i++) {
 			phase_ += phase_adjust_;

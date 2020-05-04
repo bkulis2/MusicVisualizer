@@ -2,7 +2,7 @@
 #include "cinder/audio/Output.h"
 #include "cinder/audio/Callback.h"
 #include "cinder/CinderMath.h"
-#include "InteractiveSine.h"
+#include "InteractiveSineVisualizer.h"
 
 #ifndef MUSICVISUALIZERAPP_H
 #define MUSICVISUALIZERAPP_H
@@ -27,7 +27,7 @@ namespace visualizer {
 		bool selected_interactive_sine_;
 		bool selected_frequency_visualizer_;
 
-		InteractiveSine sine_;
+		InteractiveSineVisualizer sine_visualizer_;
 	};
 
 	void PrintText(const std::string& text, const ci::ColorA& color, float font_size,

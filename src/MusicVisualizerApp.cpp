@@ -28,7 +28,7 @@ namespace visualizer {
 		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 		ci::gl::color(ci::ColorAf::white());
 
-		sine_.setup();
+		sine_visualizer_.setup();
 	}
 
 	void MusicVisualizerApp::draw() {
@@ -43,7 +43,7 @@ namespace visualizer {
 		} else if (selected_interactive_sine_) {
 			ci::gl::clear(ci::ColorAf::black());
 			cinder::gl::color(ci::ColorAf::white());
-			sine_.draw();
+			sine_visualizer_.draw();
 		} else if (selected_frequency_visualizer_) {
 
 		}
@@ -51,7 +51,7 @@ namespace visualizer {
 	
 
 	void MusicVisualizerApp::mouseMove(ci::app::MouseEvent event) {
-		sine_.mouseMove(event);
+		sine_visualizer_.mouseMove(event);
 	}
 
 	void MusicVisualizerApp::mouseDown(ci::app::MouseEvent event) {
@@ -72,7 +72,7 @@ namespace visualizer {
 	}
 
 	void MusicVisualizerApp::shutdown() {
-		sine_.shutdown();
+		sine_visualizer_.shutdown();
 	}
 
 	void MusicVisualizerApp::PrintTitle() const {
