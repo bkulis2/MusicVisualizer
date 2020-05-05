@@ -25,6 +25,7 @@ namespace visualizer {
 		void DrawPlayButton() const;
 		void DisplayPictures();
 		void DrawSelectionRect();
+
 		bool on_visualizer_screen_;
 		bool selected_interactive_visualizer_;
 		bool selected_song_visualizer_;

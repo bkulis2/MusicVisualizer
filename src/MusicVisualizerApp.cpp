@@ -32,7 +32,11 @@ namespace visualizer {
 		song_visualizer_.setup();
 	}
 
-	void MusicVisualizerApp::update() {}
+	void MusicVisualizerApp::update() {
+		if (selected_song_visualizer_) {
+			song_visualizer_.update();
+		}
+	}
 
 	void MusicVisualizerApp::draw() {
 		ci::gl::enableAlphaBlending();
@@ -56,7 +60,9 @@ namespace visualizer {
 	
 
 	void MusicVisualizerApp::mouseMove(ci::app::MouseEvent event) {
-		sine_visualizer_.mouseMove(event);
+		if (selected_interactive_visualizer_) {
+			sine_visualizer_.mouseMove(event);
+		}
 	}
 
 	void MusicVisualizerApp::mouseDown(ci::app::MouseEvent event) {
@@ -98,7 +104,7 @@ namespace visualizer {
 		float font_size = 40.0f;
 		PrintText("Song File You Chose:", ci::ColorAf::white(), font_size,
 			ci::Vec2i(1000, 150), ci::Vec2f(170.0f, ci::app::getWindowHeight() / 2 - 50.0f));
-		PrintText("src name", ci::ColorAf(1, 0, 0), font_size, ci::Vec2i(1000, 150),
+		PrintText(song_visualizer_.song_name_, ci::ColorAf(1, 0, 0), font_size, ci::Vec2i(1000, 150),
 			ci::Vec2f(ci::app::getWindowWidth() / 2 + 25.0f, ci::app::getWindowHeight() / 2 - 50.0f));
 		PrintText("Choose Your Pattern: ", ci::ColorAf::white(), font_size,
 			ci::Vec2i(1000, 150), ci::Vec2f(170.0f, ci::app::getWindowHeight() / 2 + 50.0f));
