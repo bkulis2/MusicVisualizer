@@ -1,9 +1,5 @@
 // Copyright (c) 2020 [Benjamin Kulis]. All rights reserved.
 #include <cinder/app/AppBasic.h>
-#include <cinder/audio/Io.h>
-#include <cinder/audio/Output.h>
-#include <cinder/CinderMath.h>
-#include <Resources.h>
 
 #include "SongVisualizer.h"
 #include "KissFFT.h"

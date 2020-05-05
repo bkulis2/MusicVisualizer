@@ -2,7 +2,6 @@
 #include <cinder/audio/Io.h>
 #include <cinder/audio/Output.h>
 #include <cinder/CinderMath.h>
-#include <Resources.h>
 
 #include "KissFFT.h"
 #include "Visualizer.h"
