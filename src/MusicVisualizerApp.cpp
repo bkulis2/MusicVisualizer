@@ -1,3 +1,4 @@
+// Copyright (c) 2020 [Benjamin Kulis]. All rights reserved.
 #include <cinder/app/AppBasic.h>
 #include <cinder/app/App.h>
 #include <cinder/app/Renderer.h>
@@ -17,8 +18,8 @@ using ci::app::RendererGl;
 namespace visualizer {
 
 	void MusicVisualizerApp::setup() {
-		setFrameRate(60.0f);
-		setWindowSize(800, 800);
+		setFrameRate(kFrameRate);
+		setWindowSize(kWidth, kHeight);
 
 		on_visualizer_screen_ = false;
 		selected_interactive_visualizer_ = false;
@@ -29,7 +30,9 @@ namespace visualizer {
 		ci::gl::color(ci::ColorAf::white());
 
 		sine_visualizer_.setup();
+		song_visualizer_.SetSongName(MusicVisualizerApp::getArgs()[1]);
 		song_visualizer_.setup();
+		
 	}
 
 	void MusicVisualizerApp::update() {
@@ -49,15 +52,12 @@ namespace visualizer {
 			DrawSelectionRect();
 		} else if (selected_interactive_visualizer_) {
 			ci::gl::clear(ci::ColorAf::black());
-			cinder::gl::color(ci::ColorAf::white());
 			sine_visualizer_.draw();
 		} else if (selected_song_visualizer_) {
 			ci::gl::clear(ci::ColorAf::black());
-			cinder::gl::color(ci::ColorAf::white());
 			song_visualizer_.draw();
 		}
 	}
-	
 
 	void MusicVisualizerApp::mouseMove(ci::app::MouseEvent event) {
 		if (selected_interactive_visualizer_) {
@@ -104,7 +104,7 @@ namespace visualizer {
 		float font_size = 40.0f;
 		PrintText("Song File You Chose:", ci::ColorAf::white(), font_size,
 			ci::Vec2i(1000, 150), ci::Vec2f(170.0f, ci::app::getWindowHeight() / 2 - 50.0f));
-		PrintText(song_visualizer_.song_name_, ci::ColorAf(1, 0, 0), font_size, ci::Vec2i(1000, 150),
+		PrintText(MusicVisualizerApp::getArgs()[1], ci::ColorAf(1, 0, 0), font_size, ci::Vec2i(1000, 150),
 			ci::Vec2f(ci::app::getWindowWidth() / 2 + 25.0f, ci::app::getWindowHeight() / 2 - 50.0f));
 		PrintText("Choose Your Pattern: ", ci::ColorAf::white(), font_size,
 			ci::Vec2i(1000, 150), ci::Vec2f(170.0f, ci::app::getWindowHeight() / 2 + 50.0f));
@@ -158,5 +158,5 @@ namespace visualizer {
 
 } //namespace visualizer
 
-// Start application
+  // Start application
 CINDER_APP_BASIC(visualizer::MusicVisualizerApp, RendererGl)

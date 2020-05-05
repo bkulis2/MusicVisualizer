@@ -1,3 +1,4 @@
+// Copyright (c) 2020 [Benjamin Kulis]. All rights reserved.
 #include <cinder/audio/Output.h>
 #include <cinder/audio/Callback.h>
 #include <cinder/CinderMath.h>

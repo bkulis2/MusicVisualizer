@@ -1,3 +1,4 @@
+// Copyright (c) 2020 [Benjamin Kulis]. All rights reserved.
 #pragma once
 #include <cinder/app/AppBasic.h>
 #include <cinder/audio/Output.h>

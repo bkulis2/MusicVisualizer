@@ -1,3 +1,4 @@
+// Copyright (c) 2020 [Benjamin Kulis]. All rights reserved.
 #include <cinder/app/AppBasic.h>
 #include <cinder/audio/Io.h>
 #include <cinder/audio/Output.h>
@@ -9,7 +10,6 @@
 
 namespace visualizer {
 	void SongVisualizer::setup() {
-		song_name_ = "80s_soul.mp3";
 		audio_source_file_ = ci::audio::load(ci::app::loadAsset(song_name_));
 		track_ = ci::audio::Output::addTrack(audio_source_file_, false);
 		track_->enablePcmBuffering(true);
@@ -41,8 +41,8 @@ namespace visualizer {
 		}
 	}
 
-	std::string SongVisualizer::GetSongName() {
-		return song_name_;
+	void SongVisualizer::SetSongName(const std::string &name) {
+		song_name_ = name;
 	}
 
 	void SongVisualizer::InitializeSampleCount() {

@@ -1,4 +1,4 @@
-#pragma once
+// Copyright (c) 2020 [Benjamin Kulis]. All rights reserved.
 #include <cinder/audio/Io.h>
 #include <cinder/audio/Output.h>
 #include <cinder/CinderMath.h>
@@ -15,9 +15,7 @@ namespace visualizer {
 		void draw() override;
 		void shutdown() override;
 		void update();
-		std::string GetSongName();
-
-		std::string song_name_;
+		void SetSongName(const std::string &name);
 
 	private:
 		void InitializeSampleCount();
@@ -27,5 +25,6 @@ namespace visualizer {
 		ci::audio::TrackRef track_;
 
 		bool song_playing_;
+		std::string song_name_;
 	};
 } // namespace visualizer

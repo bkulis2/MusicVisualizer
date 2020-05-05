@@ -1,3 +1,4 @@
+// Copyright (c) 2020 [Benjamin Kulis]. All rights reserved.
 #include <cinder/app/AppBasic.h>
 #include <cinder/audio/Output.h>
 #include <cinder/audio/Callback.h>
@@ -9,6 +10,10 @@
 #define MUSICVISUALIZERAPP_H
 
 namespace visualizer {
+	const float kFrameRate = 60.0f;
+	const int kWidth = 800;
+	const int kHeight = 800;
+
 	class MusicVisualizerApp : public ci::app::AppBasic {
 
 	public:
