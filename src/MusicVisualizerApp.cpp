@@ -1,10 +1,4 @@
 // Copyright (c) 2020 [Benjamin Kulis]. All rights reserved.
-#include <cinder/app/AppBasic.h>
-#include <cinder/app/App.h>
-#include <cinder/app/Renderer.h>
-#include <cinder/audio/Output.h>
-#include <cinder/audio/Callback.h>
-#include <cinder/CinderMath.h>
 #include <cinder/Text.h>
 #include <cinder/gl/Texture.h>
 #include <cinder/Rand.h>
@@ -32,7 +26,6 @@ namespace visualizer {
 		sine_visualizer_.setup();
 		song_visualizer_.SetSongName(MusicVisualizerApp::getArgs()[1]);
 		song_visualizer_.setup();
-		
 	}
 
 	void MusicVisualizerApp::update() {
@@ -47,8 +40,7 @@ namespace visualizer {
 			ci::gl::clear(ci::ColorAf(0.5, 0, 0.5));
 			PrintTitle();
 			PrintChoose();
-			DrawPlayButton();
-			DisplayPictures();
+			DisplayImages();
 			DrawSelectionRect();
 		} else if (selected_interactive_visualizer_) {
 			ci::gl::clear(ci::ColorAf::black());
@@ -66,17 +58,23 @@ namespace visualizer {
 	}
 
 	void MusicVisualizerApp::mouseDown(ci::app::MouseEvent event) {
-		if (event.isLeft() && (event.getX() >= 650 && event.getX() <= 770) &&
-			(event.getY() >= 700 && event.getY() <= 750)) {
+		if (event.isLeft() && (event.getX() >= kBtnImgLoc.x
+			&& event.getX() <= kBtnImgLoc.x + kImgDimension) &&
+			(event.getY() >= kBtnImgLoc.y
+				&& event.getY() <= kBtnImgLoc.y + kBtnHeightDimension)) {
 			on_visualizer_screen_ = true;
-		}
-		else if (event.isLeft() && (event.getX() >= 100 && event.getX() <= 300) &&
-			(event.getY() >= 500 && event.getY() <= 700)) {
+		} 
+		else if (event.isLeft() && (event.getX() >= kSineImgLoc.x
+			&& event.getX() <= kSineImgLoc.x + kImgDimension) &&
+			(event.getY() >= kSineImgLoc.y
+				&& event.getY() <= kSineImgLoc.y + kImgDimension)) {
 			selected_interactive_visualizer_ = true;
 			selected_song_visualizer_ = false;
 		}
-		else if (event.isLeft() && (event.getX() >= 400 && event.getX() <= 600) &&
-			(event.getY() >= 500 && event.getY() <= 700)) {
+		else if (event.isLeft() && (event.getX() >= kNoteImgLoc.x
+			&& event.getX() <= kNoteImgLoc.x + kImgDimension) &&
+			(event.getY() >= kNoteImgLoc.y
+				&& event.getY() <= kNoteImgLoc.y + kImgDimension)) {
 			selected_interactive_visualizer_ = false;
 			selected_song_visualizer_ = true;
 		}
@@ -93,48 +91,41 @@ namespace visualizer {
 	void MusicVisualizerApp::PrintTitle() const {
 		ci::gl::color(ci::Rand::randFloat(), ci::Rand::randFloat(),
 			ci::Rand::randFloat());
-		ci::gl::drawStrokedRect(ci::Rectf(ci::app::getWindowWidth() / 2 - 170.0f, 70,
-			ci::app::getWindowWidth() / 2 + 170.0f, 230));
-		PrintText("Music\nVisualizer\n", ci::ColorAf::black(), 80.0f, ci::Vec2i(500, 150),
-			ci::Vec2f((float) ci::app::getWindowWidth() / 2, 150.0f));
+		ci::gl::drawStrokedRect(ci::Rectf(getWindowWidth() / 2 - 170.0f, getWindowHeight() / 2 - 330.0f,
+			getWindowWidth() / 2 + 170.0f, getWindowHeight() / 2 - 170.0f));
+		PrintText("Music\nVisualizer", ci::ColorAf::black(), 80.0f, ci::Vec2i(500, 150),
+			ci::Vec2f((float) getWindowWidth() / 2, getWindowHeight() / 2 - 250.0f));
 	}
 
 	void MusicVisualizerApp::PrintChoose() const {
-		ci::gl::color(0, 0, 0);
-		float font_size = 40.0f;
+		float font_size = 50.0f;
 		PrintText("Song File You Chose:", ci::ColorAf::white(), font_size,
-			ci::Vec2i(1000, 150), ci::Vec2f(170.0f, ci::app::getWindowHeight() / 2 - 50.0f));
-		PrintText(MusicVisualizerApp::getArgs()[1], ci::ColorAf(1, 0, 0), font_size, ci::Vec2i(1000, 150),
-			ci::Vec2f(ci::app::getWindowWidth() / 2 + 25.0f, ci::app::getWindowHeight() / 2 - 50.0f));
-		PrintText("Choose Your Pattern: ", ci::ColorAf::white(), font_size,
-			ci::Vec2i(1000, 150), ci::Vec2f(170.0f, ci::app::getWindowHeight() / 2 + 50.0f));
+			ci::Vec2i(500, 150), ci::Vec2f(getWindowWidth() / 2 - 200.0f, getWindowHeight() / 2 - 50.0f));
+		PrintText(MusicVisualizerApp::getArgs()[1], ci::ColorAf(1, 0, 0), font_size, ci::Vec2i(500, 150),
+			ci::Vec2f(getWindowWidth() / 2 + 125.0f, getWindowHeight() / 2 - 50.0f));
+		PrintText("Choose Your Mode:", ci::ColorAf::white(), font_size,
+			ci::Vec2i(500, 150), ci::Vec2f(getWindowWidth() / 2 - 215.0f, getWindowHeight() / 2 + 75.0f));
 	}
 
-	void MusicVisualizerApp::DrawPlayButton() const {
-		ci::gl::color(0.0f, 0.0f, 0.7f);
-		ci::Rectf rect(650.0f, 700.0f, 770.0f, 750.0f);
-		ci::gl::drawSolidRect(rect);
-		PrintText("Play Pattern", ci::ColorAf::white(), 20.0f, ci::Vec2i(70, 50),
-			ci::Vec2f(710.0f, 725.0f));
-	}
-
-	void MusicVisualizerApp::DisplayPictures() {
+	void MusicVisualizerApp::DisplayImages() {
 		auto texture_one = ci::gl::Texture(ci::loadImage(ci::app::loadAsset("sine.png")));
-		const ci::Vec2f loc1(100.0f, 500.0f);
-		ci::gl::draw(texture_one, loc1);
-		auto texture_two = ci::gl::Texture(ci::loadImage(ci::app::loadAsset("song.png")));
-		const ci::Vec2f loc2 (400.0f, 500.0f);
-		ci::gl::draw(texture_two, loc2);
+		ci::gl::draw(texture_one, kSineImgLoc);
+		auto texture_two = ci::gl::Texture(ci::loadImage(ci::app::loadAsset("note.png")));
+		ci::gl::draw(texture_two, kNoteImgLoc);
+		auto texture_three = ci::gl::Texture(ci::loadImage(ci::app::loadAsset("playbutton.png")));
+		ci::gl::draw(texture_three, kBtnImgLoc);
 	}
 
 	void MusicVisualizerApp::DrawSelectionRect() {
 		if (selected_interactive_visualizer_) {
 			cinder::gl::color(cinder::Color::white());
-			ci::Rectf rect(90.0f, 490.0f, 310.0f, 710.0f);
+			ci::Rectf rect(kSineImgLoc.x - kImgBorderSize, kSineImgLoc.y - kImgBorderSize,
+				kSineImgLoc.x + kImgDimension + kImgBorderSize, kSineImgLoc.y + kImgDimension + kImgBorderSize);
 			cinder::gl::drawStrokedRect(rect);
 		} else if (selected_song_visualizer_) {
 			cinder::gl::color(cinder::Color::white());
-			ci::Rectf rect(390.0f, 490.0f, 610.0f, 710.0f);
+			ci::Rectf rect(kNoteImgLoc.x - kImgBorderSize, kNoteImgLoc.y - kImgBorderSize,
+				kNoteImgLoc.x + kImgDimension + kImgBorderSize, kNoteImgLoc.y + kImgDimension + kImgBorderSize);
 			cinder::gl::drawStrokedRect(rect);
 		}
 	}
