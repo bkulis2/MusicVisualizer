@@ -20,3 +20,11 @@
 1. Sync music to pattern using FFT
 2. Add beautification to UI
 3. Add functionality to pause song and visualizer
+
+## Week 3
+###Accomplished
+1. Ported project to VC10 to implement library
+2. Added logic to draw a time line and a frequency line
+3. Added compatability to interact with frequency line via mouse
+4. Added logic to read audio from a file
+5. Fixed magic numbers and tried to make home UI size adjustable
