@@ -1,5 +1,6 @@
 // Copyright (c) 2020 [Benjamin Kulis]. All rights reserved.
-#pragma once
+#include <cinder/audio/Output.h>
+
 #include "KissFFT.h"
 
 #ifndef VISUALIZER_H
@@ -8,18 +9,38 @@
 namespace visualizer {
 	class Visualizer {
 	public:
+		/**
+		* This is used to stop the fft and audio being used
+		* depending on what the visualizer is utilizing.
+		*/
 		virtual void shutdown() = 0;
+
+		/**
+		* This method is to be implemented to setup data that is needed to play
+		* audio and any variables that need to be initialized.
+		*/
 		virtual void setup() = 0;
+
+		/**
+		* This is called by the app whenever the frame is being updated in order
+		* for the visualizer to draw properly (should call DrawVisualizerLines) 
+		* and make sure the audio is playing.
+		*/
 		virtual void draw() = 0;
 
 	protected:
+		/**
+		* This is the logic used to draw the visualizer lines by creating PolyLines
+		* one for the frequency and one for the time. To do this, it iterates through
+		* data collected by the KissFFt library and plots it into the 2 Polylines respectively.
+		* Logarithms were used to smooth out the frequency to look less choppy.
+		*/
 		void DrawVisualizerLines() {
 			if (fft_) {
 				float * frequency_data = fft_->getAmplitude();
 				float * time_data = fft_->getData();
 				int32_t bin_size = fft_->getBinSize();
-
-				float scale = ((float)ci::app::getWindowWidth() - 20.0f) / (float)bin_size;
+				float scale = ((float) ci::app::getWindowWidth() - 20.0f) / (float)bin_size;
 				float window_height = (float)ci::app::getWindowHeight();
 
 				ci::PolyLine<ci::Vec2f> frequency_line;
@@ -42,6 +63,7 @@ namespace visualizer {
 				ci::gl::draw(time_line);
 			}
 		}
+
 		KissRef fft_;
 	};
 } //namespace visualizer
