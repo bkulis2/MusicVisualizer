@@ -36,8 +36,9 @@ namespace visualizer {
 					time_line.push_back(ci::Vec2f((float)i * scale + 10.0f, time_data[i]
 						* (window_height - 20.0f) * 0.25f + (window_height * 0.25f + 10.0f)));
 				}
-
+				ci::gl::color(ci::ColorAf(0.5f, 0.0f, 0.5f));
 				ci::gl::draw(frequency_line);
+				ci::gl::color(ci::ColorAf(0.0f, 0.2f, 0.5f));
 				ci::gl::draw(time_line);
 			}
 		}
