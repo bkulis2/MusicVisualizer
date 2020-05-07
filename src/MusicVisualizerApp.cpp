@@ -112,7 +112,7 @@ namespace visualizer {
 			ci::Vec2i(500, 150),
 			ci::Vec2f(getWindowWidth() / 2 - 200.0f, getWindowHeight() / 2 - 50.0f));
 		PrintText(
-			MusicVisualizerApp::getArgs()[1], ci::ColorAf(0, 0.7, 0), font_size,
+			MusicVisualizerApp::getArgs()[1], ci::ColorAf(0, 0.7f, 0), font_size,
 			ci::Vec2i(500, 150),
 			ci::Vec2f(getWindowWidth() / 2 + 125.0f, getWindowHeight() / 2 - 50.0f));
 		PrintText(
