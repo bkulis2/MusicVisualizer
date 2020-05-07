@@ -2,7 +2,6 @@
 #include <cinder/app/AppBasic.h>
 
 #include "SongVisualizer.h"
-#include "KissFFT.h"
 
 namespace visualizer {
 	void SongVisualizer::setup() {
@@ -16,7 +15,7 @@ namespace visualizer {
 		if (track_->isPlaying() && track_->isPcmBuffering()) {
 			buffer_ = track_->getPcmBuffer();
 			if (buffer_ && buffer_->getInterleavedData()) {
-				SongVisualizer::InitializeSampleCount();
+				SongVisualizer::UpdateFft();
 			}
 		}
 	}
@@ -41,7 +40,7 @@ namespace visualizer {
 		song_name_ = name;
 	}
 
-	void SongVisualizer::InitializeSampleCount() {
+	void SongVisualizer::UpdateFft() {
 		uint32_t sampleCount = buffer_->getInterleavedData()->mSampleCount;
 		if (sampleCount > 0) {
 			if (!fft_) {

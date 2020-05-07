@@ -7,7 +7,6 @@
 
 namespace visualizer {
 	class SongVisualizer : public Visualizer {
-
 	public:
 		/**
 		* This method is used to setup the logic to play the song file from
@@ -53,5 +52,5 @@ namespace visualizer {
 		bool song_playing_;
 		std::string song_name_;
 	};
-} // namespace visualizer
+}  // namespace visualizer
 #endif

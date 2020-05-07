@@ -20,7 +20,6 @@ namespace visualizer {
 	const float kBtnHeightDimension = 60.0f;
 
 	class MusicVisualizerApp : public ci::app::AppBasic {
-
 	public:
 		/**
 		* This method initalizes all of the variables and the settings
@@ -98,10 +97,11 @@ namespace visualizer {
 	* @param color The color of the text.
 	* @param font_size The size of the font to be displayed.
 	* @param size The size of the text box.
-	* @param loc The location of the top right corner for the text box to be displayed.
+	* @param loc The location of the top right corner for the text box to be
+	* displayed.
 	*/
-	void PrintText(const std::string& text, const ci::ColorA& color, float font_size,
-		const ci::Vec2i& size, const ci::Vec2f& loc);
-} //namespace visualizer
+	void PrintText(const std::string& text, const ci::ColorA& color,
+		float font_size, const ci::Vec2i& size, const ci::Vec2f& loc);
+}  // namespace visualizer
 
 #endif
